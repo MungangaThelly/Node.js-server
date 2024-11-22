@@ -4,10 +4,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const itemController = require('./controllers/itemController.js');
 
 
 // Create an express app
 const app = express();
+
+// Example route with specific CSP
+app.get('/', (req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' data:;");
+  res.send('Hello World with CSP!');
+});
+
+app.listen(5000, () => {
+  console.log('Server running on http://localhost:5000');
+});
+
 
 // Middleware
 app.use(cors());
