@@ -10,6 +10,7 @@ const itemController = require('./controllers/itemController.js');
 // Create an express app
 const app = express();
 
+
 // Example route with specific CSP
 app.get('/', (req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' data:;");
@@ -17,7 +18,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.listen(5000, () => {
-  console.log('Server running on http://localhost:5000');
+  console.log('Server running on http://127.0.0.1:5002');
 });
 
 
