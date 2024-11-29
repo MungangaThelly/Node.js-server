@@ -2,6 +2,19 @@ require('dotenv').config(); // Load environment variables from .env file
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+// Define the password
+const plaintextPassword = 'password123';
+
+// Generate a salt and hash the password
+bcrypt.hash(plaintextPassword, 10, (err, hashedPassword) => {
+  if (err) {
+    console.error('Error hashing the password:', err);
+  } else {
+    console.log('Hashed password:', hashedPassword);
+    // Now you can store the username and hashed password in your database
+  }
+});
+
 // Dummy user data (in a real application, you'd query a database)
 const users = [
   { username: 'user1', password: '$2a$10$XGAtIz3DquczmMZsUPlOyuEfp3.vtXY0XI5.Oy1hCakm/iMK5v/xu' } // bcrypt hashed password for 'password123'

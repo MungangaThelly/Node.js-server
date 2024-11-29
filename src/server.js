@@ -1,7 +1,8 @@
 require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const { login, getSecretData } = require('./controllers/authController'); // Adjust path as necessary
 const itemRoutes = require('./routes/itemRoutes'); // Import item routes
 const connectDB = require('./config/db'); // Import DB connection function
 const authRoutes = require('./routes/authRoutes');  // or wherever the auth routes are
