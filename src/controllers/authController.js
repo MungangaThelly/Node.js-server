@@ -1,13 +1,14 @@
+require('dotenv').config(); // Load environment variables from .env file
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-// Dummy user data (in real applications, you'd query a database)
+// Dummy user data (in a real application, you'd query a database)
 const users = [
-  { username: 'user1', password: 'password123' } // Plain text password (not secure, but works for the example)
+  { username: 'user1', password: '$2a$10$XGAtIz3DquczmMZsUPlOyuEfp3.vtXY0XI5.Oy1hCakm/iMK5v/xu' } // bcrypt hashed password for 'password123'
 ];
 
-// JWT secret key (in real applications, store this in an environment variable)
-const SECRET_KEY = 'your_secret_key';
+// JWT secret key (read from environment variable)
+const SECRET_KEY = process.env.SECRET_KEY;
 
 // Login Controller
 const login = (req, res) => {
@@ -18,15 +19,20 @@ const login = (req, res) => {
     return res.status(401).json({ message: 'Invalid credentials' });
   }
 
-  // Password check (in this example, passwords are not hashed, but they should be in a real application)
-  if (user.password !== password) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
+  // Compare the hashed password using bcrypt
+  bcrypt.compare(password, user.password, (err, isMatch) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error comparing passwords', error: err });
+    }
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
-  // Generate JWT token
-  const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
-  
-  res.json({ token });
+    // Generate JWT token
+    const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+
+    res.json({ token });
+  });
 };
 
 // Protected Route Controller (secret data)
