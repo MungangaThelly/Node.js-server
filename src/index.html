@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend with API Interaction</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <h1>API Frontend</h1>
+  
+  <!-- Login Form -->
+  <div id="login-form">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username" /><br />
+    <input type="password" id="password" placeholder="Password" /><br />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Secret Data -->
+  <div id="secret-data" style="display:none;">
+    <h2>Secret Data</h2>
+    <button onclick="fetchSecretData()">Get Secret Data</button>
+    <pre id="secret"></pre>
+  </div>
+
+  <script>
+    let token = '';
+
+    // Function to handle login
+    async function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await axios.post('http://localhost:5000/api/login', {
+          username: username, 
+          password: password
+        });
+
+
+        // Store token in local variable
+        token = response.data.token;
+
+        alert('Login successful!');
+
+        // Hide login form and show secret data section
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('secret-data').style.display = 'block';
+      } catch (error) {
+        // Log error details to console for debugging
+        console.error(error);
+
+        // Show error message from the backend
+        alert('Login failed: ' + (error.response ? error.response.data.message: 'unknown error'));
+      }
+    }
+
+    // Function to fetch secret data
+    async function fetchSecretData() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/secret', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        document.getElementById('secret').textContent = JSON.stringify(response.data, null, 2);
+      } catch (error) {
+        alert('Error fetching secret data: ' + (error.response ? error.response.data.message : 'unknown error'));
+      }
+    }
+  </script>
+</body>
+</html>
