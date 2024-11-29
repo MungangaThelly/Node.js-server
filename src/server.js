@@ -1,10 +1,10 @@
 require('dotenv').config(); // Load environment variables from .env file
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const itemRoutes = require('./routes/itemRoutes'); // Import item routes
 const connectDB = require('./config/db'); // Import DB connection function
+const authRoutes = require('./routes/authRoutes');  // or wherever the auth routes are
 
 // Create an express app
 const app = express();
@@ -20,10 +20,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use('/api', authRoutes);  // Make sure this matches the route you're using
 app.use('/api/items', itemRoutes); // Use item routes for CRUD operations
 
 // Connect to the database
-connectDB();
+connectDB(); // Now it should work
 
 // Start the server
 const PORT = process.env.PORT || 5000;
