@@ -18,7 +18,7 @@ const itemSchema = new mongoose.Schema({
   },
   category: {  // Optional: Add a category field
     type: String,
-    required: true
+    required: false
   },
   image: {  // Optional: Add an image field (URL or binary data)
     type: String,
