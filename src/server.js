@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { login, getSecretData } = require('./controllers/authController'); // Adjust path as necessary
 const itemRoutes = require('./routes/itemRoutes'); // Import item routes
+const userRoutes = require('./routes/userRoutes'); // Import user routes
 const connectDB = require('./config/db'); // Import DB connection function
 const authRoutes = require('./routes/authRoutes');  // or wherever the auth routes are
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api', authRoutes);  // Make sure this matches the route you're using
 app.use('/api/items', itemRoutes); // Use item routes for CRUD operations
+app.use('/api/users', userRoutes); // Add user routes to the API
 
 // Connect to the database
 connectDB(); // Now it should work
